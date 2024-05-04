@@ -1,64 +1,21 @@
 // import logo from './logo.svg';
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-
-
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-// import from "App.css";
-import "./App.css";
+import './App.css';
 
-const App = () => {
+function App() {
   const [chatHistory, setChatHistory] = useState([]);
   const [inputText, setInputText] = useState('');
 
-  // useEffect(() => {
-  //   const fetchChatHistory = async () => {
-  //     try {
-  //       const genAI = new GoogleGenerativeAI("AIzaSyAcPxLmXULOQ6hlPRzc93WgVf2yOKQo1x8"); // Replace with your API key
-  //       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-  //       const history = await model.getHistory();
-  //       const formattedHistory = history.map(message => ({
-  //         role: message.role,
-  //         parts: [{ text: message.text }]
-  //       }));
-  //       setChatHistory(formattedHistory);
-  //     } catch (error) {
-  //       console.error("Error fetching chat history:", error);
-  //     }
-  //   };
-
-  //   fetchChatHistory();
-  // }, []);
 
   const handleMessage = async (msg) => {
     console.log("handleMessage called with message:", msg);
     try {
+      setChatHistory(prevHistory => [
+        ...prevHistory,
+        { role: 'user', parts: [{ text: msg }] }
+      ]);
+
       const genAI = new GoogleGenerativeAI("AIzaSyAcPxLmXULOQ6hlPRzc93WgVf2yOKQo1x8");
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
       const chat = model.startChat({
@@ -69,16 +26,11 @@ const App = () => {
       });
       const result = await chat.sendMessage(msg);
       const response = await result.response;
-      const text = response.text();
-      setChatHistory(prevHistory => {
-        console.log("Previous chat history:", prevHistory);
-
-        return [
-          ...prevHistory,
-          { role: 'user', parts: [{ text: msg }] },
-          { role: 'model', parts: [{ text }] }
-        ]
-      });
+      const text = await response.text();
+      setChatHistory(prevHistory => [
+        ...prevHistory,
+        { role: 'model', parts: [{ text }] }
+      ]);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -98,7 +50,6 @@ const App = () => {
       handleSendMessage();
     }
   };
-
   return (
     // <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', backgroundurl: '#f3f4f6' }}>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', backgroundImage: 'url("https://images.unsplash.com/photo-1710610383283-37ecdf156c60?q=80&w=1738&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")', backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "cover" }} className='hi'>
@@ -134,3 +85,7 @@ const App = () => {
 }
 
 export default App;
+
+
+
+
