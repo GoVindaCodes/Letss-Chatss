@@ -371,11 +371,13 @@ function App() {
   const [error, setError] = useState('');
   const chatContainerRef = useRef(null);
   const recognitionRef = useRef(null);
+
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [chatHistory]);
+
   useEffect(() => {
     if ('webkitSpeechRecognition' in window) {
       const recognition = new window.webkitSpeechRecognition();
@@ -384,6 +386,7 @@ function App() {
       recognition.lang = 'en-US';
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
+        console.log("Transcript:", transcript);
         setInputText(transcript);
         handleMessage(transcript);
       };
@@ -397,6 +400,7 @@ function App() {
       setError('Speech recognition not supported in this browser.');
     }
   }, []);
+
   const handleMessage = async (msg) => {
     try {
       setChatHistory(prevHistory => [
@@ -454,6 +458,7 @@ function App() {
     }
   };
   const testTalking = () => {
+    console.log("Test Talking button clicked");
     setIsTalking(true);
     setInputText("This is a test message.");
     setTimeout(() => {
@@ -461,6 +466,7 @@ function App() {
       setInputText('');
     }, 3000);
   };
+
 
   return (
     <div className='container'>
@@ -485,6 +491,7 @@ function App() {
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
           />
+          <button onClick={handleSendMessage}>Send</button>
           <button onClick={startListening}>🎤</button>
           <button onClick={testTalking}>Test Talking</button>
           {isTalking && (
@@ -504,4 +511,3 @@ function App() {
 }
 
 export default App;
-
