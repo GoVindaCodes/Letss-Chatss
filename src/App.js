@@ -491,7 +491,6 @@ function App() {
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
           />
-              {* <button onClick={handleSendMessage}>Send</button> *}
           <button onClick={startListening}>🎤</button>
           <button onClick={testTalking}>Test Talking</button>
           {isTalking && (
