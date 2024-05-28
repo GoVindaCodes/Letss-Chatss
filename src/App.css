@@ -237,3 +237,47 @@ button {
     transform: translateY(3px);
   }
 }
+/* Add this CSS to your App.css file */
+
+/* Button animation */
+button.send {
+  padding: 10px 20px;
+  border-radius: 25px;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  animation: buttonAnimation 0.5s infinite alternate;
+}
+
+@keyframes buttonAnimation {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+/* Talking button animation */
+button.talking {
+  padding: 10px 20px;
+  border-radius: 25px;
+  background-color: #38a169;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+button.talking .talking-indicator .wave {
+  animation: waveAnimation 1s ease-in-out infinite alternate;
+}
+
+@keyframes waveAnimation {
+  0% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(3px);
+  }
+}
