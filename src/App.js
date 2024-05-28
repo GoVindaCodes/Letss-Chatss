@@ -650,8 +650,9 @@ function App() {
             placeholder="Type your message..."
           />
           <button onClick={handleSendMessage}>Send</button>
-          <button onClick={startListening}>🎤</button>
-          <button onClick={testTalking}>Test Talking</button>
+<button onClick={startListening} className="animated-button">🎤</button>
+<button onClick={testTalking} className={`animated-button ${isTalking ? 'animated' : ''}`}
+          {/* <button onClick={testTalking}>Test Talking</button> */}
           {isTalking && (
             <div className="talking-indicator">
               <div className="wave"></div>
