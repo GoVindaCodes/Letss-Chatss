@@ -649,7 +649,6 @@ function App() {
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
           />
-          <button onClick={handleSendMessage}>Send</button>
           <button onClick={startListening} className="animated-button">🎤</button>
           {isTalking && (
             <div className="talking-indicator">
