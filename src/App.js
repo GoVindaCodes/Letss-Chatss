@@ -513,160 +513,6 @@
 
 
 
-// import React, { useState, useRef, useEffect } from 'react';
-// import { GoogleGenerativeAI } from "@google/generative-ai";
-// import './App.css';
-
-// function App() {
-//   const [chatHistory, setChatHistory] = useState([]);
-//   const [inputText, setInputText] = useState('');
-//   const [isTalking, setIsTalking] = useState(false);
-//   const [error, setError] = useState('');
-//   const chatContainerRef = useRef(null);
-//   const recognitionRef = useRef(null);
-
-//   useEffect(() => {
-//     if (chatContainerRef.current) {
-//       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-//     }
-//   }, [chatHistory]);
-
-//   useEffect(() => {
-//     if ('webkitSpeechRecognition' in window) {
-//       const recognition = new window.webkitSpeechRecognition();
-//       recognition.continuous = false;
-//       recognition.interimResults = false;
-//       recognition.lang = 'en-US';
-//       recognition.onresult = (event) => {
-//         const transcript = event.results[0][0].transcript;
-//         console.log("Transcript:", transcript);
-//         setInputText(transcript);
-//         handleMessage(transcript);
-//       };
-//       recognition.onerror = (event) => {
-//         console.error('Speech recognition error', event);
-//         setError(`Speech recognition error: ${event.error}`);
-//       };
-
-//       recognitionRef.current = recognition;
-//     } else {
-//       setError('Speech recognition not supported in this browser.');
-//     }
-//   }, []);
-
-//   const handleMessage = async (msg) => {
-//     try {
-//       setChatHistory(prevHistory => [
-//         ...prevHistory,
-//         { role: 'user', parts: [{ text: msg }] }
-//       ]);
-//       const genAI = new GoogleGenerativeAI("AIzaSyAcPxLmXULOQ6hlPRzc93WgVf2yOKQo1x8");
-//       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-//       const chat = model.startChat({
-//         history: chatHistory,
-//         generationConfig: {
-//           maxOutputTokens: 100,
-//         },
-//       });
-//       const result = await chat.sendMessage(msg);
-//       const response = await result.response;
-//       let text = await response.text();
-//       if (!text || text.trim() === "") {
-//         text = "I'm still learning. You can ask another question.";
-//       }
-//       setChatHistory(prevHistory => [
-//         ...prevHistory,
-//         { role: 'model', parts: [{ text }] }
-//       ]);
-//       speakText(text);
-//     } catch (error) {
-//       console.error("Error:", error);
-//     }
-//   };
-
-//   const speakText = (text) => {
-//     if ('speechSynthesis' in window) {
-//       const utterance = new SpeechSynthesisUtterance(text);
-//       utterance.lang = 'en-US';
-//       utterance.onstart = () => setIsTalking(true);
-//       utterance.onend = () => setIsTalking(false);
-//       window.speechSynthesis.speak(utterance);
-//     }
-//   };
-
-//   const handleSendMessage = () => {
-//     if (inputText.trim() !== '') {
-//       handleMessage(inputText.trim());
-//       setInputText('');
-//     }
-//   };
-
-//   const handleKeyPress = (e) => {
-//     if (e.key === 'Enter') {
-//       e.preventDefault();
-//       handleSendMessage();
-//     }
-//   };
-
-//   const startListening = () => {
-//     if (recognitionRef.current) {
-//       recognitionRef.current.start();
-//     } else {
-//       setError('Speech recognition not initialized.');
-//     }
-//   };
-
-//   const testTalking = () => {
-//     console.log("Test Talking button clicked");
-//     setIsTalking(true);
-//     setInputText("This is a test message.");
-//     setTimeout(() => {
-//       setIsTalking(false);
-//       setInputText('');
-//     }, 3000);
-//   };
-
-//   return (
-//     <div className='container'>
-//       <div className={`chat-container ${isTalking ? 'talking' : ''}`}>
-//         <div className='header'>
-//           <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=1636&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Gemini Avatar" className="avatar" />
-//           <div className="model-info">
-//             <div className="model-name">Gemini Model</div>
-//           </div>
-//         </div>
-//         <div ref={chatContainerRef} className='chat-history'>
-//           {chatHistory.map((message, index) => (
-//             <div key={index} className={`chat-message ${message.role}`}>
-//               {message.parts && message.parts.length > 0 && message.parts[0].text}
-//             </div>
-//           ))}
-//         </div>
-//         <div className='footer'>
-//           <textarea
-//             value={inputText}
-//             onChange={(e) => setInputText(e.target.value)}
-//             onKeyPress={handleKeyPress}
-//             placeholder="Type your message..."
-//           />
-//           <button onClick={startListening} className="animated-button">🎤</button>
-//           {isTalking && (
-//             <div className="talking-indicator">
-//               <div className="wave"></div>
-//             </div>
-//           )}
-//           {isTalking && (
-//             <div className="talking-message">{inputText}</div>
-//           )}
-//           {error && <div className="error">{error}</div>}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;
-
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import './App.css';
@@ -678,7 +524,6 @@ function App() {
   const [error, setError] = useState('');
   const chatContainerRef = useRef(null);
   const recognitionRef = useRef(null);
-  let currentUtterance = useRef(null);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -733,39 +578,25 @@ function App() {
         ...prevHistory,
         { role: 'model', parts: [{ text }] }
       ]);
-      currentUtterance.current = speakText(text);
+      speakText(text);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   const speakText = (text) => {
-    let utterance = null;
     if ('speechSynthesis' in window) {
-      utterance = new SpeechSynthesisUtterance(text.replace(/[\uD800-\uDFFF]./g, '')); // Remove emojis
+      const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
-
-      // Get available voices and select the desired one
-      const voices = window.speechSynthesis.getVoices();
-      const selectedVoice = voices.find(voice => voice.name === 'Your Desired Voice');
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-      }
-
       utterance.onstart = () => setIsTalking(true);
       utterance.onend = () => setIsTalking(false);
       window.speechSynthesis.speak(utterance);
     }
-    return utterance;
   };
 
   const handleSendMessage = () => {
     if (inputText.trim() !== '') {
-      if (currentUtterance.current) {
-        window.speechSynthesis.cancel(); // Cancel the currently speaking utterance
-      }
-      const utterance = speakText(inputText.trim());
-      currentUtterance.current = utterance;
+      handleMessage(inputText.trim());
       setInputText('');
     }
   };
@@ -835,6 +666,8 @@ function App() {
 }
 
 export default App;
+
+
 
 
 
