@@ -845,7 +845,6 @@ function App() {
   const [inputText, setInputText] = useState('');
   const [isTalking, setIsTalking] = useState(false);
   const [error, setError] = useState('');
-  const [selectedVoice, setSelectedVoice] = useState(null);
   const chatContainerRef = useRef(null);
   const recognitionRef = useRef(null);
   let currentUtterance = useRef(null);
@@ -903,21 +902,17 @@ function App() {
         ...prevHistory,
         { role: 'model', parts: [{ text }] }
       ]);
-      currentUtterance.current = speakText(text, selectedVoice);
+      currentUtterance.current = speakText(text);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-  const speakText = (text, voice) => {
+  const speakText = (text) => {
     let utterance = null;
     if ('speechSynthesis' in window) {
       utterance = new SpeechSynthesisUtterance(text.replace(/[\uD800-\uDFFF]./g, '')); // Remove emojis
-      utterance.lang = 'en-US';
-
-      if (voice) {
-        utterance.voice = voice;
-      }
+      utterance.lang = 'en-US'; // Set language
 
       utterance.onstart = () => setIsTalking(true);
       utterance.onend = () => setIsTalking(false);
@@ -931,7 +926,7 @@ function App() {
       if (currentUtterance.current) {
         window.speechSynthesis.cancel(); // Cancel the currently speaking utterance
       }
-      const utterance = speakText(inputText.trim(), selectedVoice);
+      const utterance = speakText(inputText.trim());
       currentUtterance.current = utterance;
       setInputText('');
     }
@@ -950,20 +945,6 @@ function App() {
     } else {
       setError('Speech recognition not initialized.');
     }
-  };
-
-  const testTalking = () => {
-    console.log("Test Talking button clicked");
-    setIsTalking(true);
-    setInputText("This is a test message.");
-    setTimeout(() => {
-      setIsTalking(false);
-      setInputText('');
-    }, 3000);
-  };
-
-  const handleVoiceChange = (voice) => {
-    setSelectedVoice(voice);
   };
 
   return (
@@ -989,16 +970,10 @@ function App() {
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
           />
-          <button onClick={startListening} className="animated-button">🎤</button>
-<div className='voice-dropdown'>
-  <label htmlFor="voice">Select Voice:</label>
-  <select id="voice" onChange={(e) => handleVoiceChange(e.target.value)}>
-    <option value="">Default</option>
-    {window.speechSynthesis.getVoices().map((voice, index) => (
-      <option key={index} value={voice}>{voice.name}</option>
-    ))}
-  </select>
-</div>
+          <button onClick={startListening} className={`animated-button ${isTalking ? 'talking' : ''}`}>🎤</button>
+          <button onClick={handleSendMessage} className={`send ${isTalking ? 'talking' : ''}`}>
+            Send
+          </button>
           {isTalking && (
             <div className="talking-indicator">
               <div className="wave"></div>
@@ -1015,5 +990,6 @@ function App() {
 }
 
 export default App;
+
 
 
