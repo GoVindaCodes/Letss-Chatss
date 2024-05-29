@@ -990,12 +990,15 @@ function App() {
             placeholder="Type your message..."
           />
           <button onClick={startListening} className="animated-button">🎤</button>
-          <select onChange={(e) => handleVoiceChange(e.target.value)}>
-            <option value="">Select Voice</option>
-            {window.speechSynthesis.getVoices().map((voice, index) => (
-              <option key={index} value={voice}>{voice.name}</option>
-            ))}
-          </select>
+          <div>
+            <label htmlFor="voice">Select Voice:</label>
+            <select id="voice" onChange={(e) => handleVoiceChange(e.target.value)}>
+              <option value="">Default</option>
+              {window.speechSynthesis.getVoices().map((voice, index) => (
+                <option key={index} value={voice}>{voice.name}</option>
+              ))}
+            </select>
+          </div>
           {isTalking && (
             <div className="talking-indicator">
               <div className="wave"></div>
