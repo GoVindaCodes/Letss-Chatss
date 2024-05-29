@@ -165,3 +165,143 @@ button {
   color: #8e8e8e;
   margin-top: 4px;
 }
+
+.talking .avatar {
+  animation: talkingAnimation 1s infinite alternate;
+}
+
+@keyframes talkingAnimation {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+.chat-container.talking .footer button {
+  /* Add styles for the button when talking */
+  /* For example, change the button color */
+  background-color: #ff0000; /* Red color */
+}
+
+/* Add this CSS to your App.css file */
+.talking-indicator {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #007bff; /* Blue color */
+  animation: waveAnimation 1s ease-in-out infinite alternate;
+}
+
+.talking-message {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+@keyframes waveAnimation {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+/* Add this CSS to your App.css file */
+.talking-message {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  animation: waveAnimation 1s ease-in-out infinite alternate;
+}
+
+@keyframes waveAnimation {
+  0% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(3px);
+  }
+}
+/* Add this CSS to your App.css file */
+
+/* Button animation */
+button.send {
+  padding: 10px 20px;
+  border-radius: 25px;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  animation: buttonAnimation 0.5s infinite alternate;
+}
+
+@keyframes buttonAnimation {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+/* Talking button animation */
+button.talking {
+  padding: 10px 20px;
+  border-radius: 25px;
+  background-color: #38a169;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+button.talking .talking-indicator .wave {
+  animation: waveAnimation 1s ease-in-out infinite alternate;
+}
+
+@keyframes waveAnimation {
+  0% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(3px);
+  }
+}
+.voice-dropdown {
+  margin-bottom: 10px;
+}
+
+.voice-dropdown select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  width: 100%;
+}
+
+.voice-dropdown select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.voice-dropdown label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
