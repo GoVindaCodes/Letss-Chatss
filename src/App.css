@@ -281,27 +281,4 @@ button.talking .talking-indicator .wave {
     transform: translateY(3px);
   }
 }
-.voice-dropdown {
-  margin-bottom: 10px;
-}
 
-.voice-dropdown select {
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #fff;
-  color: #333;
-  width: 100%;
-}
-
-.voice-dropdown select:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-.voice-dropdown label {
-  display: block;
-  margin-bottom: 5px;
-  color: #333;
-}
